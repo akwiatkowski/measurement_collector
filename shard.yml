@@ -1,0 +1,13 @@
+name: measurement_collector
+version: 0.1.0
+
+authors:
+  - Aleksander Kwiatkowski <bobikx@poczta.fm>
+
+targets:
+  measurement_collector:
+    main: src/measurement_collector.cr
+
+crystal: 1.6.2
+
+license: MIT
