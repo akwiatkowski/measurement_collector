@@ -1,6 +1,5 @@
-# TODO: Write documentation for `MeasurementCollector`
+require "./measurement_collector/all"
+
 module MeasurementCollector
   VERSION = "0.1.0"
-
-  # TODO: Put your code here
 end
