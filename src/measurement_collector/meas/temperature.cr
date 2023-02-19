@@ -13,4 +13,8 @@ struct MeasurementCollector::Meas::Temperature
 
     new(time: time, temperature: temperature)
   end
+
+  def <=>(other)
+    self.time <=> other.time
+  end
 end
