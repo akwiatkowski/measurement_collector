@@ -1,11 +1,19 @@
 require "./base"
 
 class MeasurementCollector::Parser::EfentoTemperature < MeasurementCollector::Parser::Base
+  Log = ::Log.for(self)
+
   def parse
     array = Array(MeasurementCollector::Meas::Temperature).new
     while csv.next
-      record = MeasurementCollector::Meas::Temperature.from_efento_csv(csv.row)
-      array << record
+      begin
+        record = MeasurementCollector::Meas::Temperature.from_efento_csv(csv.row)
+        array << record
+      rescue Time::Format::Error
+        Log.error { "parse: #{csv.row.to_h.inspect} invalid time format" }
+      rescue KeyError
+        Log.error { "parse: #{csv.row.to_h.inspect} invalid record" }
+      end
     end
     return array
   end

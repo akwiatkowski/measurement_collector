@@ -1,4 +1,6 @@
 struct MeasurementCollector::Meas::Temperature
+  Log = ::Log.for(self)
+
   def initialize(@time : Time, @temperature : Float32)
   end
 

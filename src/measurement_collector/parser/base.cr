@@ -1,8 +1,10 @@
 require "csv"
 
 class MeasurementCollector::Parser::Base
+  Log = ::Log.for(self)
+
   def initialize(@path : String)
-    @csv_content = ""
+    Log.info { "init #{@path}" }
   end
 
   def parse

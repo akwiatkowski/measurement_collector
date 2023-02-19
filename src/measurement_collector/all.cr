@@ -1,3 +1,5 @@
+require "log"
+
 require "./meas/all"
 require "./parser/all"
 require "./collector/all"
