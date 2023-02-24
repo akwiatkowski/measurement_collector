@@ -6,7 +6,9 @@ class MeasurementCollector::Writer::TemperatureWriter < MeasurementCollector::Wr
     @array : Array(MeasurementCollector::Meas::EfentoTemperature),
     @unix_time = UNIX_TIME_FLAG_DEFAULT
   )
-    @sorted_array = @array.sort.uniq
+    @sorted_array = @array.uniq { |r| r.time }.sort.as(
+      Array(MeasurementCollector::Meas::EfentoTemperature)
+    )
 
     Log.debug { "init #{@path} #{@sorted_array.size} records" }
   end
@@ -14,8 +16,6 @@ class MeasurementCollector::Writer::TemperatureWriter < MeasurementCollector::Wr
   getter :array, :sorted_array
 
   def write
-    Log.info { "write #{@path} #{@sorted_array.size} records" }
-
     File.open(@path, "w") do |file|
       file.puts "time;temperature"
       CSV.build(
@@ -28,6 +28,8 @@ class MeasurementCollector::Writer::TemperatureWriter < MeasurementCollector::Wr
         end
       end
     end
+
+    Log.info { "wrote #{@path} #{@sorted_array.size} records" }
   end
 
   def write_per_month
@@ -47,6 +49,10 @@ class MeasurementCollector::Writer::TemperatureWriter < MeasurementCollector::Wr
       month_array = @sorted_array.select do |temperature|
         temperature.time.year == time.year && temperature.time.month == time.month
       end
+
+      # TODO: refactor to have one place which execute writing monthly processed data
+      Log.info { "writing monthly CSV #{month_filename} with #{month_array.size} records" }
+      sync_logs
 
       writer = MeasurementCollector::Writer::TemperatureWriter.new(
         path: path_month,

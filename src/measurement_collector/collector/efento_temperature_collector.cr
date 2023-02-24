@@ -7,19 +7,20 @@ class MeasurementCollector::Collector::EfentoTemperatureCollector
   )
     @csv_paths = Dir[File.join([@path, "*.csv"])]
 
-    Log.info { "init #{@csv_paths}" }
+    Log.info { "init #{@csv_paths.size} paths" }
   end
 
   getter :array
 
   def parse
-    @csv_paths.each do |csv_path|
-      Log.debug { "parsing #{csv_path}" }
+    @csv_paths.sort.each_with_index do |csv_path, i|
+      Log.info { "parsing #{i + 1}/#{@csv_paths.size}: #{csv_path}" }
 
       parser = MeasurementCollector::Parser::EfentoTemperatureParser.new(
         path: csv_path
       )
       @array += parser.parse
+      sync_logs
     end
 
     @array = @array.sort.uniq

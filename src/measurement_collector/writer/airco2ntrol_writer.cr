@@ -6,7 +6,9 @@ class MeasurementCollector::Writer::Airco2ntrolWriter < MeasurementCollector::Wr
     @array : Array(MeasurementCollector::Meas::Airco2ntrol),
     @unix_time = UNIX_TIME_FLAG_DEFAULT
   )
-    @sorted_array = @array.sort.uniq
+    @sorted_array = @array.uniq { |r| r.time }.sort.as(
+      Array(MeasurementCollector::Meas::Airco2ntrol)
+    )
 
     Log.debug { "init #{@path} #{@sorted_array.size} records" }
   end
@@ -23,7 +25,8 @@ class MeasurementCollector::Writer::Airco2ntrolWriter < MeasurementCollector::Wr
         separator: ';',
         quote_char: '"'
       ) do |csv|
-        @sorted_array.each do |airco2ntrol|
+        @sorted_array.each_with_index do |airco2ntrol, i|
+          # TODO: add logger debug with index
           csv.row convert_time(airco2ntrol.time, @unix_time), airco2ntrol.temperature,
             airco2ntrol.relative_humidity, airco2ntrol.co2_level
         end
@@ -48,6 +51,10 @@ class MeasurementCollector::Writer::Airco2ntrolWriter < MeasurementCollector::Wr
       month_array = @sorted_array.select do |airco2ntrol|
         airco2ntrol.time.year == time.year && airco2ntrol.time.month == time.month
       end
+
+      # TODO: refactor to have one place which execute writing monthly processed data
+      Log.info { "writing monthly CSV #{month_filename} with #{month_array.size} records" }
+      sync_logs
 
       writer = MeasurementCollector::Writer::Airco2ntrolWriter.new(
         path: path_month,

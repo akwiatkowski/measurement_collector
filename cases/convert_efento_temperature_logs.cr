@@ -1,4 +1,7 @@
+require "./log_config"
 require "../src/measurement_collector"
+
+Log.info { "start script " }
 
 path = "/home/olek/Dokumenty/pomiary/temperatura/dzialka_garaz_polnoc/"
 collector = MeasurementCollector::Collector::EfentoTemperatureCollector.new(
