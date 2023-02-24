@@ -9,6 +9,7 @@ parsed_data = collector.parse
 output_path = "/home/olek/Dokumenty/pomiary/output/dzialka/"
 writer = MeasurementCollector::Writer::TemperatureWriter.new(
   path: output_path,
-  array: parsed_data
+  array: parsed_data,
+  unix_time: false
 )
 writer.write_per_month

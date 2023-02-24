@@ -8,7 +8,7 @@ describe MeasurementCollector::Writer::Airco2ntrolWriter do
     )
     parsed_data = collector.parse
 
-    output_path = "temp/airco2ntrol_output.csv"
+    output_path = "temp/airco2ntrol_writer.csv"
     writer = MeasurementCollector::Writer::Airco2ntrolWriter.new(
       path: output_path,
       array: parsed_data
@@ -50,7 +50,7 @@ describe MeasurementCollector::Writer::Airco2ntrolWriter do
     )
     parsed_data = collector.parse
 
-    output_path = "temp/airco2ntrol_output_human_readable.csv"
+    output_path = "temp/airco2ntrol_writer_human_readable.csv"
     writer = MeasurementCollector::Writer::Airco2ntrolWriter.new(
       path: output_path,
       array: parsed_data,

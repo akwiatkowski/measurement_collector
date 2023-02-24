@@ -8,14 +8,14 @@ describe MeasurementCollector::Writer::TemperatureWriter do
     )
     parsed_data = collector.parse
 
-    output_path = "temp/temperature_output.csv"
+    output_path = "temp/efento_temperature_writer.csv"
     writer = MeasurementCollector::Writer::TemperatureWriter.new(
       path: output_path,
       array: parsed_data
     )
     writer.write
 
-    fixture_path = "spec/fixtures/writers/temperature_writer.csv"
+    fixture_path = "spec/fixtures/writers/efento_temperature_writer.csv"
     fixture_text = File.read(fixture_path)
     output_text = File.read(output_path)
     output_text.should eq fixture_text
@@ -36,7 +36,7 @@ describe MeasurementCollector::Writer::TemperatureWriter do
     )
     writer.write_per_month
 
-    fixture_path = "spec/fixtures/writers/temperature_writer.csv"
+    fixture_path = "spec/fixtures/writers/efento_temperature_writer.csv"
     output_month_path = "temp/2022-11.csv"
     fixture_text = File.read(fixture_path)
     output_month_text = File.read(output_month_path)
@@ -50,7 +50,7 @@ describe MeasurementCollector::Writer::TemperatureWriter do
     )
     parsed_data = collector.parse
 
-    output_path = "temp/temperature_output_human_readable.csv"
+    output_path = "temp/efento_temperature_writer_human_readable.csv"
     writer = MeasurementCollector::Writer::TemperatureWriter.new(
       path: output_path,
       array: parsed_data,
@@ -58,7 +58,7 @@ describe MeasurementCollector::Writer::TemperatureWriter do
     )
     writer.write
 
-    fixture_path = "spec/fixtures/writers/temperature_writer_human_readable.csv"
+    fixture_path = "spec/fixtures/writers/efento_temperature_writer_human_readable.csv"
     fixture_text = File.read(fixture_path)
     output_text = File.read(output_path)
     output_text.should eq fixture_text

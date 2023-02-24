@@ -4,10 +4,10 @@ class MeasurementCollector::Parser::EfentoTemperatureParser < MeasurementCollect
   Log = ::Log.for(self)
 
   def parse
-    array = Array(MeasurementCollector::Meas::Temperature).new
+    array = Array(MeasurementCollector::Meas::EfentoTemperature).new
     csv.each do |csv_iterated|
       begin
-        record = MeasurementCollector::Meas::Temperature.from_efento_csv(csv_iterated.row.to_h)
+        record = MeasurementCollector::Meas::EfentoTemperature.from_csv(csv_iterated.row.to_h)
         array << record
       rescue Time::Format::Error
         Log.error { "parse: #{csv.row.to_h.inspect} invalid time format" }

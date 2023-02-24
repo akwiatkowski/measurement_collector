@@ -3,7 +3,7 @@ class MeasurementCollector::Collector::EfentoTemperatureCollector
 
   def initialize(
     @path : String,
-    @array = Array(MeasurementCollector::Meas::Temperature).new
+    @array = Array(MeasurementCollector::Meas::EfentoTemperature).new
   )
     @csv_paths = Dir[File.join([@path, "*.csv"])]
 

@@ -51,7 +51,8 @@ class MeasurementCollector::Writer::Airco2ntrolWriter < MeasurementCollector::Wr
 
       writer = MeasurementCollector::Writer::Airco2ntrolWriter.new(
         path: path_month,
-        array: month_array
+        array: month_array,
+        unix_time: @unix_time
       )
       writer.write
 

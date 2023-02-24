@@ -3,7 +3,7 @@ class MeasurementCollector::Writer::TemperatureWriter < MeasurementCollector::Wr
 
   def initialize(
     @path : String,
-    @array : Array(MeasurementCollector::Meas::Temperature),
+    @array : Array(MeasurementCollector::Meas::EfentoTemperature),
     @unix_time = UNIX_TIME_FLAG_DEFAULT
   )
     @sorted_array = @array.sort.uniq
@@ -50,7 +50,8 @@ class MeasurementCollector::Writer::TemperatureWriter < MeasurementCollector::Wr
 
       writer = MeasurementCollector::Writer::TemperatureWriter.new(
         path: path_month,
-        array: month_array
+        array: month_array,
+        unix_time: @unix_time
       )
       writer.write
 
