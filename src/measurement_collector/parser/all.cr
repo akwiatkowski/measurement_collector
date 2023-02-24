@@ -1,1 +1,2 @@
-require "./efento_temperature"
+require "./efento_temperature_parser"
+require "./airco2ntrol_parser"

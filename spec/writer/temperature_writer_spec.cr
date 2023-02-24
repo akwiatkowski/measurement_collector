@@ -3,7 +3,7 @@ require "../spec_helper"
 describe MeasurementCollector::Writer::TemperatureWriter do
   it "write processed temperature data in single CSV" do
     path = "spec/fixtures/efento_temperature/"
-    collector = MeasurementCollector::Collector::EfentoTemperature.new(
+    collector = MeasurementCollector::Collector::EfentoTemperatureCollector.new(
       path: path
     )
     parsed_data = collector.parse
@@ -23,7 +23,7 @@ describe MeasurementCollector::Writer::TemperatureWriter do
 
   it "write processed temperature data in CSV per month" do
     path = "spec/fixtures/efento_temperature/"
-    collector = MeasurementCollector::Collector::EfentoTemperature.new(
+    collector = MeasurementCollector::Collector::EfentoTemperatureCollector.new(
       path: path
     )
     parsed_data = collector.parse

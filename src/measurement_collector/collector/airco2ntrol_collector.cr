@@ -1,9 +1,9 @@
-class MeasurementCollector::Collector::EfentoTemperature
+class MeasurementCollector::Collector::Airco2ntrolCollector
   Log = ::Log.for(self)
 
   def initialize(
     @path : String,
-    @array = Array(MeasurementCollector::Meas::Temperature).new
+    @array = Array(MeasurementCollector::Meas::Airco2ntrol).new
   )
     @csv_paths = Dir[File.join([@path, "*.csv"])]
 
@@ -16,7 +16,7 @@ class MeasurementCollector::Collector::EfentoTemperature
     @csv_paths.each do |csv_path|
       Log.debug { "parsing #{csv_path}" }
 
-      parser = MeasurementCollector::Parser::EfentoTemperature.new(
+      parser = MeasurementCollector::Parser::Airco2ntrolParser.new(
         path: csv_path
       )
       @array += parser.parse

@@ -1,12 +1,12 @@
 require "../spec_helper"
 
-describe MeasurementCollector::Parser::EfentoTemperature do
-  it "load CSVs from path" do
-    path = "spec/fixtures/efento_temperature/"
-    collector = MeasurementCollector::Collector::EfentoTemperature.new(
+describe MeasurementCollector::Parser::EfentoTemperatureParser do
+  it "parse fixture csv" do
+    path = "spec/fixtures/efento_temperature/efento_temperature.csv"
+    parser = MeasurementCollector::Parser::EfentoTemperatureParser.new(
       path: path
     )
-    parsed_data = collector.parse
+    parsed_data = parser.parse
 
     parsed_data.size.should eq 14
     parsed_data[0].temperature.should eq 10.4.to_f32

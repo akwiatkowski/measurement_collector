@@ -1,7 +1,7 @@
 require "../src/measurement_collector"
 
 path = "/home/olek/Dokumenty/pomiary/temperatura/dzialka_garaz_polnoc/"
-collector = MeasurementCollector::Collector::EfentoTemperature.new(
+collector = MeasurementCollector::Collector::EfentoTemperatureCollector.new(
   path: path
 )
 parsed_data = collector.parse

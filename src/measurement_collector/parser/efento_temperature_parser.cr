@@ -1,6 +1,6 @@
 require "./base"
 
-class MeasurementCollector::Parser::EfentoTemperature < MeasurementCollector::Parser::Base
+class MeasurementCollector::Parser::EfentoTemperatureParser < MeasurementCollector::Parser::Base
   Log = ::Log.for(self)
 
   def parse
