@@ -4,14 +4,16 @@ describe MeasurementCollector::Writer::Airco2ntrolWriter do
   it "write processed data in single CSV" do
     path = "spec/fixtures/airco2ntrol/"
     collector = MeasurementCollector::Collector::Airco2ntrolCollector.new(
-      path: path
+      path: path,
+      only_after: Time.local(2000, 1, 1)
     )
     parsed_data = collector.parse
 
     output_path = "temp/airco2ntrol_writer.csv"
     writer = MeasurementCollector::Writer::Airco2ntrolWriter.new(
       path: output_path,
-      array: parsed_data
+      array: parsed_data,
+      only_after: Time.local(2000, 1, 1)
     )
     writer.write
 
@@ -24,7 +26,8 @@ describe MeasurementCollector::Writer::Airco2ntrolWriter do
   it "write processed data in CSV per month" do
     path = "spec/fixtures/airco2ntrol/"
     collector = MeasurementCollector::Collector::Airco2ntrolCollector.new(
-      path: path
+      path: path,
+      only_after: Time.local(2000, 1, 1)
     )
     parsed_data = collector.parse
 
@@ -32,7 +35,8 @@ describe MeasurementCollector::Writer::Airco2ntrolWriter do
     output_path = "temp/"
     writer = MeasurementCollector::Writer::Airco2ntrolWriter.new(
       path: output_path,
-      array: parsed_data
+      array: parsed_data,
+      only_after: Time.local(2000, 1, 1)
     )
     writer.write_per_month
 
@@ -46,7 +50,8 @@ describe MeasurementCollector::Writer::Airco2ntrolWriter do
   it "write processed temperature data in single CSV using human readable time" do
     path = "spec/fixtures/airco2ntrol/"
     collector = MeasurementCollector::Collector::Airco2ntrolCollector.new(
-      path: path
+      path: path,
+      only_after: Time.local(2000, 1, 1)
     )
     parsed_data = collector.parse
 
@@ -54,7 +59,8 @@ describe MeasurementCollector::Writer::Airco2ntrolWriter do
     writer = MeasurementCollector::Writer::Airco2ntrolWriter.new(
       path: output_path,
       array: parsed_data,
-      unix_time: false
+      unix_time: false,
+      only_after: Time.local(2000, 1, 1)
     )
     writer.write
 

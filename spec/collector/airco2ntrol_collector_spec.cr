@@ -4,7 +4,8 @@ describe MeasurementCollector::Collector::Airco2ntrolCollector do
   it "load CSVs from path" do
     path = "spec/fixtures/airco2ntrol/"
     collector = MeasurementCollector::Collector::Airco2ntrolCollector.new(
-      path: path
+      path: path,
+      only_after: Time.local(2000, 1, 1)
     )
     parsed_data = collector.parse
 

@@ -3,7 +3,8 @@ class MeasurementCollector::Collector::Airco2ntrolCollector
 
   def initialize(
     @path : String,
-    @array = Array(MeasurementCollector::Meas::Airco2ntrol).new
+    @array = Array(MeasurementCollector::Meas::Airco2ntrol).new,
+    @only_after = (Time.local - 3.months).at_beginning_of_month
   )
     @csv_paths = Dir[File.join([@path, "*.csv"])]
 
@@ -21,7 +22,7 @@ class MeasurementCollector::Collector::Airco2ntrolCollector
       parser = MeasurementCollector::Parser::Airco2ntrolParser.new(
         path: csv_path
       )
-      @array += parser.parse
+      @array += parser.parse.select { |meas| meas.time >= @only_after }
       sync_logs
     end
 

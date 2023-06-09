@@ -4,7 +4,8 @@ class MeasurementCollector::Writer::Airco2ntrolWriter < MeasurementCollector::Wr
   def initialize(
     @path : String,
     @array : Array(MeasurementCollector::Meas::Airco2ntrol),
-    @unix_time = UNIX_TIME_FLAG_DEFAULT
+    @unix_time = UNIX_TIME_FLAG_DEFAULT,
+    @only_after = (Time.local - 3.months).at_beginning_of_month
   )
     @sorted_array = @array.uniq { |r| r.time }.sort.as(
       Array(MeasurementCollector::Meas::Airco2ntrol)
@@ -35,7 +36,9 @@ class MeasurementCollector::Writer::Airco2ntrolWriter < MeasurementCollector::Wr
   end
 
   def write_per_month
+    only_after_begin_of_month = @only_after.at_beginning_of_month
     Log.debug { "starting for multiple months #{@sorted_array.size} records" }
+    Log.debug { "filter only after #{only_after_begin_of_month}" }
 
     # no data -> do nothing
     return if @sorted_array.size == 0
@@ -44,15 +47,31 @@ class MeasurementCollector::Writer::Airco2ntrolWriter < MeasurementCollector::Wr
     time_to = @sorted_array.last.time
     time = time_from
 
-    # TODO: it's a lot of data here. It could be optimized getting index of
-    # data at the end of the month
-    while time <= time_to
-      month_filename = time.to_s("%Y-%m.csv")
+    # different approach on splitting
+    meas_hash = Hash(String, Array(MeasurementCollector::Meas::Airco2ntrol)).new
+
+    @sorted_array.each do |meas|
+      # we have a lot of data and it's better to just ignore some old
+      # measurements which should be already processed
+      next if meas.time < only_after_begin_of_month
+
+      month_prefix = meas.time.to_s("%Y-%m")
+      if meas_hash[month_prefix]?.nil?
+        meas_hash[month_prefix] = Array(MeasurementCollector::Meas::Airco2ntrol).new
+      end
+
+      meas_hash[month_prefix] << meas
+
+      if (meas_hash[month_prefix].size % 50_000 == 0)
+        Log.info { "separation #{month_prefix} with #{meas_hash[month_prefix].size} records" }
+      end
+    end
+
+    meas_hash.keys.each do |month_prefix|
+      month_filename = "#{month_prefix}.csv"
       path_month = File.join([@path, month_filename])
 
-      month_array = @sorted_array.select do |airco2ntrol|
-        airco2ntrol.time.year == time.year && airco2ntrol.time.month == time.month
-      end
+      month_array = meas_hash[month_prefix]
 
       # TODO: refactor to have one place which execute writing monthly processed data
       Log.info { "writing monthly CSV #{month_filename} with #{month_array.size} records" }
@@ -64,8 +83,6 @@ class MeasurementCollector::Writer::Airco2ntrolWriter < MeasurementCollector::Wr
         unix_time: @unix_time
       )
       writer.write
-
-      time = time.shift(months: 1)
     end
   end
 end
